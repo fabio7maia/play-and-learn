@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { openai } from "../../lib";
+import { openai } from "../../lib/openai";
 
 export const POST: APIRoute = async ({ request }) => {
   const formData = await request.formData();

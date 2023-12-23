@@ -1,7 +1,12 @@
 import React from "react";
-import { AGE_VALUES, LEVEL_VALUES, storage } from "../lib";
+import {
+  AGE_VALUES,
+  LEVEL_VALUES,
+  THEME_VALUES,
+  storage,
+} from "../lib/storage";
 
-export const SettingsCard: React.FC = () => {
+export const SettingsBlock: React.FC = () => {
   const { settings } = storage.get();
   const [formData, setFormData] = React.useState(settings);
 
@@ -13,8 +18,19 @@ export const SettingsCard: React.FC = () => {
   };
 
   const onClickSave = () => {
-    console.log("SettingsCard", { formData });
     storage.set({ settings: formData });
+
+    const body = new FormData();
+    body.append("age", formData.age);
+    body.append("level", formData.level);
+    body.append("theme", formData.theme);
+
+    fetch("/api/cookies", {
+      method: "POST",
+      body,
+    }).then((res) => {
+      window.location.href = window.location.origin;
+    });
   };
 
   return (
@@ -51,6 +67,26 @@ export const SettingsCard: React.FC = () => {
             value={formData.level}
           >
             {LEVEL_VALUES.map((x) => (
+              <option key={x} value={x}>
+                {x}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text text-white">
+              What is your prefered theme?
+            </span>
+          </div>
+          <select
+            name="theme"
+            className="select select-bordered"
+            onChange={onChangeSelect}
+            value={formData.theme}
+          >
+            {THEME_VALUES.map((x) => (
               <option key={x} value={x}>
                 {x}
               </option>

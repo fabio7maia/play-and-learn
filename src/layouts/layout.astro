@@ -2,10 +2,20 @@
 import BottomNav from '../components/bottomNav.astro';
 
 const background = `background-image: url(/backgrounds/home-${Math.ceil(Math.random() * 13)}.jpeg)`;
+
+const playAndLearnCookie = Astro.cookies.get('__play_and_learn__');
+
+let theme = 'retro';
+
+try {
+	if(playAndLearnCookie){
+		theme = playAndLearnCookie.json().settings.theme;
+	}
+} catch(err){}
 ---
 
 <!doctype html>
-<html lang="pt" data-theme="retro">
+<html lang="pt" data-theme={theme}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />

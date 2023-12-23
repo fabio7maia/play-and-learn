@@ -1,5 +1,16 @@
 ---
 import Layout from '../layouts/layout.astro';
+
+// const formData = await Astro.request.formData();
+
+// const age = formData.has('age');
+// const level = formData.has('level');
+// const theme = formData.has('theme');
+
+// if(age || level || theme) {
+// 	Astro.response.headers.set('COOKIE', JSON.stringify({settings: {age, level, theme}}))
+// }
+
 ---
 
 <Layout>
@@ -9,7 +20,9 @@ import Layout from '../layouts/layout.astro';
 		</div>
 		<!-- <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure> -->
 		<div class="card-body">
-			<button class="btn btn-secondary"><span class="text-primary-content">Play</span></button>
+			<a href="/game">
+				<button class="btn btn-secondary"><span class="text-primary-content">Play</span></button>
+			</a>
 		</div>
 	  </div>
 	
