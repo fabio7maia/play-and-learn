@@ -1,0 +1,31 @@
+---
+import { Cog6ToothIcon, HomeIcon } from '@heroicons/react/24/solid';
+
+const {pathname} = Astro.url;
+
+const homeClass = pathname === '/' ? 'active text-blue-400' : undefined;
+const SettingsClass = pathname === '/settings' ? 'active text-blue-400' : undefined;
+---
+
+<div class="btm-nav">
+    <a href="/">
+      <button class={homeClass}>
+        <div class="flex-col flex items-center">
+          <HomeIcon className={homeClass} height={32}/>
+          <span class="btm-nav-label">Home</span>
+        </div>
+      </button>
+    </a>
+    <!-- <button class="active">
+      <ArrowTrendingUpIcon />
+      <span class="btm-nav-label">Leader board</span>
+    </button> -->
+    <a href="/settings">
+      <button class={SettingsClass}>
+        <div class="flex-col flex items-center">
+          <Cog6ToothIcon className={SettingsClass} height={32}/>
+          <span class="btm-nav-label">Settings</span>
+        </div>
+      </button>
+    </a>
+  </div>
