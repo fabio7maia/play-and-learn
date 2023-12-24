@@ -56,38 +56,39 @@ const handler = async ({
   // console.log("formData", { age, level });
 
   try {
-    // const aiRes = await openai.chat.completions.create({
-    //   messages: messages,
-    //   model: "gpt-3.5-turbo-1106",
-    //   response_format: { type: "json_object" },
-    //   // temperature: 1.5,
-    // });
+    const aiRes = await openai.chat.completions.create({
+       messages: messages,
+       model: "gpt-3.5-turbo-1106",
+       response_format: { type: "json_object" },
+       temperature: 1.5,
+    });
 
-    // const questions: any = JSON.parse(aiRes.choices[0].message.content || "");
+    const questions: any = JSON.parse(aiRes.choices[0].message.content || "");
 
-    // // console.log("questions", { questions });
+    // console.log("questions", { questions });
 
-    // try {
-    //   await supabase.from("questions").insert({
-    //     context: { age, level, language },
-    //     ai_response: questions,
-    //   });
-    // } catch (err) {}
+    try {
+       await supabase.from("questions").insert({
+       context: { age, level, language },
+         ai_response: questions,
+       });
+    } catch (err) {}
 
-    // const { success } = quizSchema2.safeParse(questions);
+    const { success } = quizSchema2.safeParse(questions);
 
-    // let data = questions;
-    // if (success) {
-    //   data["questions"] = data.quizzes;
-    //   delete data.quizzes;
-    // } else {
-    //   quizSchema.parse(questions);
-    // }
+    let data = questions;
+    if (success) {
+       data["questions"] = data.quizzes;
+       delete data.quizzes;
+    } else {
+       quizSchema.parse(questions);
+    }
 
-    // // console.log("game", { age, level, questions });
+    // console.log("game", { age, level, questions });
 
-    // return new Response(JSON.stringify({ status: "success", data }));
+    return new Response(JSON.stringify({ status: "success", data }));
 
+    /*
     return new Response(
       JSON.stringify({
         status: "success",
@@ -172,6 +173,7 @@ const handler = async ({
         },
       })
     );
+    */
   } catch (err) {
     return new Response(
       JSON.stringify({
