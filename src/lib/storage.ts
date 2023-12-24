@@ -52,11 +52,14 @@ export const THEME_VALUES = [
   "sunset",
 ] as const;
 
+export const LANGUAGE_VALUES = ["pt-pt", "en-gb"] as const;
+
 type PlayAndLearnStorage = {
   settings: {
     age: (typeof AGE_VALUES)[number];
     level: (typeof LEVEL_VALUES)[number];
     theme: (typeof THEME_VALUES)[number];
+    language: (typeof LANGUAGE_VALUES)[number];
   };
 };
 
@@ -67,6 +70,7 @@ export const PLAY_AND_LEARN_STORAGE_DEFAULTS: PlayAndLearnStorage = {
     age: "10 a 13",
     level: "3",
     theme: "retro",
+    language: "pt-pt",
   },
 };
 

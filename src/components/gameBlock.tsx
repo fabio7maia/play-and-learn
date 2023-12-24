@@ -18,6 +18,8 @@ type GameState = {
     | "ended"
     | "error";
   questions: { question: string; answer: string; choices: string[] }[];
+  numberOfCorrect: number;
+  numberOfIncorrect: number;
 };
 
 export const GameBlock: React.FC = () => {
@@ -29,6 +31,8 @@ export const GameBlock: React.FC = () => {
     timer: 10,
     status: "loading",
     questions: [],
+    numberOfCorrect: 0,
+    numberOfIncorrect: 0,
   });
   const [_, setTick] = React.useState(0);
 
@@ -51,13 +55,14 @@ export const GameBlock: React.FC = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        gameState.current.questions = [
-          {
-            answer: "1",
-            choices: ["1", "2", "3", "4"],
-            question: "Qual?",
-          },
-        ];
+        // gameState.current.questions = [
+        //   {
+        //     answer: "1",
+        //     choices: ["1", "2", "3", "4"],
+        //     question: "Qual?",
+        //   },
+        // ];
+        gameState.current.questions = res.data.questions;
         gameState.current.status = "readyToStart";
 
         update();
@@ -119,6 +124,9 @@ export const GameBlock: React.FC = () => {
 
     if (choice === question.answer) {
       gameState.current.points += gameState.current.timer;
+      gameState.current.numberOfCorrect++;
+    } else {
+      gameState.current.numberOfIncorrect++;
     }
 
     resetTimer();
@@ -137,6 +145,7 @@ export const GameBlock: React.FC = () => {
       gameState.current.status = "ended";
     }
 
+    gameState.current.numberOfIncorrect++;
     update();
   };
 
@@ -150,7 +159,15 @@ export const GameBlock: React.FC = () => {
     update();
   };
 
-  const { points, questionIndex, questions, status, timer } = gameState.current;
+  const {
+    points,
+    questionIndex,
+    questions,
+    status,
+    timer,
+    numberOfCorrect,
+    numberOfIncorrect,
+  } = gameState.current;
 
   let messageForQuestionBlock = (
     <>
@@ -208,8 +225,26 @@ export const GameBlock: React.FC = () => {
 
           <div className="mb-8" />
 
-          <div className="card min-w-150 w-auto bg-info p-8 text-white">
-            <QuestionMarkCircleIcon height={32} />
+          <div className="card min-w-96 min-h-72 w-auto bg-info p-8 text-white">
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="font-bold text-4xl">
+                  {questionIndex + 1}/{questions.length}
+                </span>
+              </div>
+
+              <QuestionMarkCircleIcon height={32} className="mx-2" />
+
+              <div>
+                <span className="font-bold text-4xl text-green-600">
+                  {numberOfCorrect}
+                </span>
+                <span className="font-bold text-4xl">/</span>
+                <span className="font-bold text-4xl text-red-600">
+                  {numberOfIncorrect}
+                </span>
+              </div>
+            </div>
 
             {status === "loading" ? (
               <div className="skeleton mt-8 bg-gray-300 w-84 h-24"></div>
@@ -226,7 +261,7 @@ export const GameBlock: React.FC = () => {
 
           <div className="mb-8" />
 
-          <div className="card min-w-100 w-auto bg-neutral-content p-8 text-white">
+          <div className="card min-w-96 w-auto bg-neutral-content p-8 text-white">
             <div
               className={`grid grid-rows-2 grid-flow-col gap-4 z-10 ${
                 timer === 0 ? "opacity-50" : undefined
@@ -234,13 +269,13 @@ export const GameBlock: React.FC = () => {
             >
               {status === "loading" ? (
                 [0, 1, 2, 3].map((x) => (
-                  <div key={x} className="skeleton bg-gray-300 w-48 h-24"></div>
+                  <div key={x} className="skeleton bg-gray-300 w-56 h-24"></div>
                 ))
               ) : ["readyToStart", "ended"].includes(status) ? (
                 [0, 1, 2, 3].map((x) => (
                   <div key={x}>
                     <button
-                      className="btn btn-accent w-48 h-24"
+                      className="btn btn-accent w-56 h-24"
                       onClick={handlerForChoiceButtonClick}
                     >
                       {messageForChoiceButton}
@@ -252,7 +287,7 @@ export const GameBlock: React.FC = () => {
                   {question?.choices.map((choice) => (
                     <div key={choice}>
                       <button
-                        className="btn btn-accent w-48 h-24"
+                        className="btn btn-accent w-56 h-24"
                         onClick={() => onClickChoice(choice)}
                         disabled={timer === 0}
                       >
