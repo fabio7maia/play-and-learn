@@ -288,26 +288,26 @@ export const GameBlock: React.FC = () => {
             </>
           )}
 
-          <div className="card w-full bg-neutral-content p-4 text-white flex flex-row justify-between items-center">
+          <div className="card w-full bg-neutral-content p-2 text-white flex flex-row justify-between items-center">
             <div className="flex items-center">
-              <GiftIcon height={32} className="mr-4" />
+              <GiftIcon height={24} className="mr-4" />
 
-              <span className="font-bold text-4xl">{points}</span>
+              <span className="font-bold text-2xl">{points}</span>
             </div>
 
             <div className="flex items-center">
-              <span className="font-bold text-4xl mr-4">{timer}</span>
+              <span className="font-bold text-2xl mr-4">{timer}</span>
 
-              <ClockIcon height={32} />
+              <ClockIcon height={24} />
             </div>
           </div>
 
           <div className="mb-8" />
 
-          <div className="card min-h-72 bg-info p-8 text-white">
+          <div className="card min-h-72 bg-info p-4 text-white">
             <div className="flex justify-between items-center">
               <div>
-                <span className="font-bold text-4xl">
+                <span className="font-bold text-2xl">
                   {gameState.current.status === "loading"
                     ? 0
                     : questionIndex + 1}
@@ -316,10 +316,10 @@ export const GameBlock: React.FC = () => {
               </div>
 
               <div>
-                <span className="font-bold text-4xl text-green-600">
+                <span className="font-bold text-2xl text-green-600">
                   👍 {numberOfCorrect}
                 </span>
-                <span className="font-bold text-4xl text-red-600 ml-2">
+                <span className="font-bold text-2xl text-red-600 ml-2">
                   👎 {numberOfIncorrect}
                 </span>
               </div>
@@ -340,7 +340,7 @@ export const GameBlock: React.FC = () => {
 
           <div className="mb-8" />
 
-          <div className="card bg-neutral-content p-8 text-white">
+          <div className="card bg-neutral-content p-4 text-white">
             <div
               className={`grid grid-rows-2 grid-flow-col gap-4 z-20 ${
                 timer === 0 ? "opacity-50" : undefined
