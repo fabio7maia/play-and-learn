@@ -1,7 +1,8 @@
 import {
   ClockIcon,
   GiftIcon,
-  QuestionMarkCircleIcon,
+  HandThumbDownIcon,
+  HandThumbUpIcon,
 } from "@heroicons/react/24/solid";
 import React from "react";
 import { storage, type TAgeValues } from "../lib/storage";
@@ -20,6 +21,7 @@ type GameState = {
   questions: { question: string; answer: string; choices: string[] }[];
   numberOfCorrect: number;
   numberOfIncorrect: number;
+  lastAnswerStatus: "none" | "correct" | "incorrect";
 };
 
 const TIMER_VALUES: Record<TAgeValues, number> = {
@@ -42,6 +44,7 @@ export const GameBlock: React.FC = () => {
     questions: [],
     numberOfCorrect: 0,
     numberOfIncorrect: 0,
+    lastAnswerStatus: "none",
   });
   const [_, setTick] = React.useState(0);
 
@@ -56,6 +59,9 @@ export const GameBlock: React.FC = () => {
     gameState.current.questions = [];
     gameState.current.status = "loading";
     gameState.current.timer = timerValue;
+    gameState.current.lastAnswerStatus = "none";
+    gameState.current.numberOfCorrect = 0;
+    gameState.current.numberOfIncorrect = 0;
     update();
 
     fetch("/api/questions", {
@@ -138,8 +144,10 @@ export const GameBlock: React.FC = () => {
     if (choice === question.answer) {
       gameState.current.points += gameState.current.timer;
       gameState.current.numberOfCorrect++;
+      gameState.current.lastAnswerStatus = "correct";
     } else {
       gameState.current.numberOfIncorrect++;
+      gameState.current.lastAnswerStatus = "incorrect";
     }
 
     resetTimer();
@@ -159,6 +167,7 @@ export const GameBlock: React.FC = () => {
     }
 
     gameState.current.numberOfIncorrect++;
+    gameState.current.lastAnswerStatus = "incorrect";
     update();
   };
 
@@ -209,10 +218,45 @@ export const GameBlock: React.FC = () => {
 
   const question = questions?.[questionIndex];
 
+  const lastAnswerStatus = gameState.current.lastAnswerStatus;
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      gameState.current.lastAnswerStatus = "none";
+
+      update();
+    }, 1000);
+  }, [lastAnswerStatus]);
+
   // console.log("GameBlock", { gameState });
 
   return (
     <>
+      {/* <div className="fixed z-40 opacity-50 h-screen w-full bg-slate-500"></div> */}
+      <div
+        className="fixed z-50 animate-ping"
+        style={{
+          top: "50vh",
+          left: "50vw",
+          display:
+            gameState.current.lastAnswerStatus === "incorrect"
+              ? "block"
+              : "none",
+        }}
+      >
+        <HandThumbDownIcon height={100} color="red" />
+      </div>
+      <div
+        className="fixed z-50 animate-ping"
+        style={{
+          top: "50vh",
+          left: "50vw",
+          display:
+            gameState.current.lastAnswerStatus === "correct" ? "block" : "none",
+        }}
+      >
+        <HandThumbUpIcon height={100} color="green" />
+      </div>
       {status === "error" ? (
         <button className="btn btn-warning btn-lg" onClick={onClickRetry}>
           <span className="text-lg">
@@ -222,6 +266,29 @@ export const GameBlock: React.FC = () => {
         </button>
       ) : (
         <div className="flex-col">
+          {gameState.current.status === "loading" && (
+            <>
+              <div role="alert" className="alert alert-info">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  className="stroke-current shrink-0 w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span>Por favor aguarde enquanto o jogo é criado 😋</span>
+              </div>
+
+              <div className="mb-8" />
+            </>
+          )}
+
           <div className="card w-auto bg-neutral-content p-4 text-white flex flex-row justify-between items-center">
             <div className="flex items-center">
               <GiftIcon height={32} className="mr-4" />
@@ -242,25 +309,27 @@ export const GameBlock: React.FC = () => {
             <div className="flex justify-between items-center">
               <div>
                 <span className="font-bold text-4xl">
-                  {questionIndex + 1}/{questions.length}
+                  {gameState.current.status === "loading"
+                    ? 0
+                    : questionIndex + 1}
+                  /{questions.length}
                 </span>
               </div>
 
-              <QuestionMarkCircleIcon height={32} className="mx-2" />
+              {/* <QuestionMarkCircleIcon height={32} className="mx-2" /> */}
 
               <div>
                 <span className="font-bold text-4xl text-green-600">
-                  {numberOfCorrect}
+                  👍 {numberOfCorrect}
                 </span>
-                <span className="font-bold text-4xl">/</span>
-                <span className="font-bold text-4xl text-red-600">
-                  {numberOfIncorrect}
+                <span className="font-bold text-4xl text-red-600 ml-2">
+                  👎 {numberOfIncorrect}
                 </span>
               </div>
             </div>
 
             {status === "loading" ? (
-              <div className="skeleton mt-8 bg-gray-300 w-84 h-24"></div>
+              <div className="skeleton mt-8 bg-gray-300 w-84 h-40"></div>
             ) : ["readyToStart", "ended"].includes(status) ? (
               <span className="mt-4 font-bold text-4xl">
                 {messageForQuestionBlock}
