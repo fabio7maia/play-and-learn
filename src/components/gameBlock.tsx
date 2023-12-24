@@ -332,7 +332,7 @@ export const GameBlock: React.FC = () => {
                 {messageForQuestionBlock}
               </span>
             ) : (
-              <span className="mt-4 font-bold text-4xl">
+              <span className="mt-4 font-bold text-2xl">
                 {question?.question}
               </span>
             )}
