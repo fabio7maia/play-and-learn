@@ -62,7 +62,7 @@ const handler = async ({
        messages: messages,
        model: "gpt-3.5-turbo-1106",
        response_format: { type: "json_object" },
-       temperature: 1.5,
+       // temperature: 1.5,
     });
 
     const questions: any = JSON.parse(aiRes.choices[0].message.content || "");
