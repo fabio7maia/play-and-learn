@@ -225,14 +225,13 @@ export const GameBlock: React.FC = () => {
       gameState.current.lastAnswerStatus = "none";
 
       update();
-    }, 1000);
+    }, 500);
   }, [lastAnswerStatus]);
 
   // console.log("GameBlock", { gameState });
 
   return (
-    <>
-      {/* <div className="fixed z-40 opacity-50 h-screen w-full bg-slate-500"></div> */}
+    <div className="flex flex-col items-center justify-center w-full">
       <div
         className="fixed z-50 animate-ping"
         style={{
@@ -265,7 +264,7 @@ export const GameBlock: React.FC = () => {
           </span>
         </button>
       ) : (
-        <div className="flex-col">
+        <div className="flex-col w-full">
           {gameState.current.status === "loading" && (
             <>
               <div role="alert" className="alert alert-info">
@@ -289,7 +288,7 @@ export const GameBlock: React.FC = () => {
             </>
           )}
 
-          <div className="card w-auto bg-neutral-content p-4 text-white flex flex-row justify-between items-center">
+          <div className="card w-full bg-neutral-content p-4 text-white flex flex-row justify-between items-center">
             <div className="flex items-center">
               <GiftIcon height={32} className="mr-4" />
 
@@ -305,7 +304,7 @@ export const GameBlock: React.FC = () => {
 
           <div className="mb-8" />
 
-          <div className="card min-w-96 min-h-72 w-auto bg-info p-8 text-white">
+          <div className="card min-h-72 bg-info p-8 text-white">
             <div className="flex justify-between items-center">
               <div>
                 <span className="font-bold text-4xl">
@@ -315,8 +314,6 @@ export const GameBlock: React.FC = () => {
                   /{questions.length}
                 </span>
               </div>
-
-              {/* <QuestionMarkCircleIcon height={32} className="mx-2" /> */}
 
               <div>
                 <span className="font-bold text-4xl text-green-600">
@@ -343,21 +340,24 @@ export const GameBlock: React.FC = () => {
 
           <div className="mb-8" />
 
-          <div className="card min-w-96 w-auto bg-neutral-content p-8 text-white">
+          <div className="card bg-neutral-content p-8 text-white">
             <div
-              className={`grid grid-rows-2 grid-flow-col gap-4 z-10 ${
+              className={`grid grid-rows-2 grid-flow-col gap-4 z-20 ${
                 timer === 0 ? "opacity-50" : undefined
               }`}
             >
               {status === "loading" ? (
                 [0, 1, 2, 3].map((x) => (
-                  <div key={x} className="skeleton bg-gray-300 w-56 h-24"></div>
+                  <div
+                    key={x}
+                    className="skeleton bg-gray-300 w-full h-24"
+                  ></div>
                 ))
               ) : ["readyToStart", "ended"].includes(status) ? (
                 [0, 1, 2, 3].map((x) => (
                   <div key={x}>
                     <button
-                      className="btn btn-accent w-56 h-24"
+                      className="btn btn-accent w-full h-24"
                       onClick={handlerForChoiceButtonClick}
                     >
                       {messageForChoiceButton}
@@ -369,7 +369,7 @@ export const GameBlock: React.FC = () => {
                   {question?.choices.map((choice) => (
                     <div key={choice}>
                       <button
-                        className="btn btn-accent w-56 h-24"
+                        className="btn btn-accent w-full min-h-24"
                         onClick={() => onClickChoice(choice)}
                         disabled={timer === 0}
                       >
@@ -382,7 +382,7 @@ export const GameBlock: React.FC = () => {
             </div>
 
             {timer === 0 && (
-              <div className="absolute z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute z-30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <button
                   className="btn btn-primary w-48 h-24"
                   onClick={onClickNext}
@@ -394,6 +394,6 @@ export const GameBlock: React.FC = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };

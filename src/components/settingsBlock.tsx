@@ -25,15 +25,15 @@ export const SettingsBlock: React.FC = () => {
     formRef.current?.submit();
   };
 
-  console.log("SettingsBlock", { settings, formData });
+  // console.log("SettingsBlock", { settings, formData });
 
   return (
     <form ref={formRef as any} action="/api/cookies" method="POST">
-      <div className="card min-w-80 w-auto bg-neutral-content p-8 text-white">
+      <div className="card justify-center items-center bg-neutral-content p-8 text-white">
         <div className="card-title">
-          <h1 className="mb-4 text-4xl font-bold">Settings</h1>
+          <h1 className="mb-8 text-4xl font-bold">Settings</h1>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 w-full flex flex-col items-center">
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text text-white">What is your age?</span>
@@ -114,7 +114,7 @@ export const SettingsBlock: React.FC = () => {
         <div className="card-actions">
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-lg mt-8"
             onClick={onClickSave}
           >
             <span className="text-primary-content">Save</span>
