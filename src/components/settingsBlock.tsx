@@ -22,18 +22,7 @@ export const SettingsBlock: React.FC = () => {
   const onClickSave = () => {
     storage.set({ settings: formData });
 
-    const body = new FormData();
-    body.append("age", formData.age);
-    body.append("level", formData.level);
-    body.append("theme", formData.theme);
-    body.append("language", formData.language);
-
-    // fetch("/api/cookies", {
-    //   method: "POST",
-    //   body,
-    // }).then((res) => {
-    //   window.location.href = window.location.origin;
-    // });
+    formRef.current?.submit();
   };
 
   console.log("SettingsBlock", { settings, formData });
@@ -123,7 +112,11 @@ export const SettingsBlock: React.FC = () => {
         </div>
 
         <div className="card-actions">
-          <button className="btn btn-primary" onClick={onClickSave}>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={onClickSave}
+          >
             <span className="text-primary-content">Save</span>
           </button>
         </div>

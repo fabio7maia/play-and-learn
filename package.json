@@ -2,6 +2,9 @@
   "name": "play-and-learn",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">18.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,6 +14,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",
+    "@astrojs/cloudflare": "^8.0.0",
     "@astrojs/netlify": "^4.0.1",
     "@astrojs/react": "^3.0.8",
     "@astrojs/tailwind": "^5.0.4",
