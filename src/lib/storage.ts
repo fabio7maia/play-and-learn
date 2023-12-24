@@ -5,6 +5,9 @@ export const AGE_VALUES = [
   "15 a 20",
   "> 20",
 ] as const;
+
+export type TAgeValues = (typeof AGE_VALUES)[number];
+
 export const LEVEL_VALUES = [
   "1",
   "2",
@@ -17,6 +20,9 @@ export const LEVEL_VALUES = [
   "9",
   "10",
 ] as const;
+
+export type TLevelValues = (typeof LEVEL_VALUES)[number];
+
 export const THEME_VALUES = [
   "light",
   "dark",
@@ -52,14 +58,18 @@ export const THEME_VALUES = [
   "sunset",
 ] as const;
 
+export type TThemeValues = (typeof THEME_VALUES)[number];
+
 export const LANGUAGE_VALUES = ["pt-pt", "en-gb"] as const;
+
+export type TLanguageValues = (typeof LANGUAGE_VALUES)[number];
 
 type PlayAndLearnStorage = {
   settings: {
-    age: (typeof AGE_VALUES)[number];
-    level: (typeof LEVEL_VALUES)[number];
-    theme: (typeof THEME_VALUES)[number];
-    language: (typeof LANGUAGE_VALUES)[number];
+    age: TAgeValues;
+    level: TLevelValues;
+    theme: TThemeValues;
+    language: TLanguageValues;
   };
 };
 

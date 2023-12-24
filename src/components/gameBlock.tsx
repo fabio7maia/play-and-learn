@@ -4,7 +4,7 @@ import {
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid";
 import React from "react";
-import { storage } from "../lib/storage";
+import { storage, type TAgeValues } from "../lib/storage";
 
 type GameState = {
   questionIndex: number;
@@ -22,13 +22,22 @@ type GameState = {
   numberOfIncorrect: number;
 };
 
+const TIMER_VALUES: Record<TAgeValues, number> = {
+  "< 6": 60,
+  "6 a 9": 45,
+  "10 a 13": 30,
+  "15 a 20": 20,
+  "> 20": 15,
+};
+
 export const GameBlock: React.FC = () => {
   const { settings } = storage.get();
   const intervalId = React.useRef<number>();
+  const timerValue = TIMER_VALUES[settings.age];
   const gameState = React.useRef<GameState>({
     questionIndex: 0,
     points: 0,
-    timer: 15,
+    timer: timerValue,
     status: "loading",
     questions: [],
     numberOfCorrect: 0,
@@ -46,7 +55,7 @@ export const GameBlock: React.FC = () => {
     gameState.current.questionIndex = 0;
     gameState.current.questions = [];
     gameState.current.status = "loading";
-    gameState.current.timer = 15;
+    gameState.current.timer = timerValue;
     update();
 
     fetch("/api/questions", {
@@ -106,7 +115,7 @@ export const GameBlock: React.FC = () => {
   };
 
   const resetTimer = () => {
-    gameState.current.timer = 15;
+    gameState.current.timer = timerValue;
   };
 
   const onClickChoice = (choice: string) => {
