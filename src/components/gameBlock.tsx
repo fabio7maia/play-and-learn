@@ -28,7 +28,7 @@ export const GameBlock: React.FC = () => {
   const gameState = React.useRef<GameState>({
     questionIndex: 0,
     points: 0,
-    timer: 10,
+    timer: 15,
     status: "loading",
     questions: [],
     numberOfCorrect: 0,
@@ -40,13 +40,13 @@ export const GameBlock: React.FC = () => {
     const body = new FormData();
     body.append("age", settings.age);
     body.append("level", settings.level);
-    body.append("theme", settings.theme);
+    body.append("language", settings.language);
 
     gameState.current.points = 0;
     gameState.current.questionIndex = 0;
     gameState.current.questions = [];
     gameState.current.status = "loading";
-    gameState.current.timer = 10;
+    gameState.current.timer = 15;
     update();
 
     fetch("/api/questions", {
@@ -55,15 +55,19 @@ export const GameBlock: React.FC = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        // gameState.current.questions = [
-        //   {
-        //     answer: "1",
-        //     choices: ["1", "2", "3", "4"],
-        //     question: "Qual?",
-        //   },
-        // ];
-        gameState.current.questions = res.data.questions;
-        gameState.current.status = "readyToStart";
+        if (res.status === "success") {
+          // gameState.current.questions = [
+          //   {
+          //     answer: "1",
+          //     choices: ["1", "2", "3", "4"],
+          //     question: "Qual?",
+          //   },
+          // ];
+          gameState.current.questions = res.data.questions;
+          gameState.current.status = "readyToStart";
+        } else {
+          gameState.current.status = "error";
+        }
 
         update();
       })
@@ -102,7 +106,7 @@ export const GameBlock: React.FC = () => {
   };
 
   const resetTimer = () => {
-    gameState.current.timer = 10;
+    gameState.current.timer = 15;
   };
 
   const onClickChoice = (choice: string) => {
@@ -196,7 +200,7 @@ export const GameBlock: React.FC = () => {
 
   const question = questions?.[questionIndex];
 
-  console.log("GameBlock", { gameState });
+  // console.log("GameBlock", { gameState });
 
   return (
     <>

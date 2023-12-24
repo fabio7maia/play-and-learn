@@ -1,5 +1,27 @@
 import type { APIRoute } from "astro";
 import { openai } from "../../lib/openai";
+import { supabase } from "../../lib/supabase";
+import { z } from "zod";
+
+const quizSchema = z.object({
+  questions: z.array(
+    z.object({
+      question: z.string(),
+      answer: z.string(),
+      choices: z.array(z.string()),
+    })
+  ),
+});
+
+const quizSchema2 = z.object({
+  quizzes: z.array(
+    z.object({
+      question: z.string(),
+      answer: z.string(),
+      choices: z.array(z.string()),
+    })
+  ),
+});
 
 const handler = async ({
   age = "10 a 13",
@@ -13,7 +35,7 @@ const handler = async ({
   const messages = [
     {
       role: "user",
-      content: `É um jogo de quiz para crianças e adultos`,
+      content: `É um jogo de quiz para crianças e adultos sobre qualquer área`,
     },
     {
       role: "user",
@@ -21,7 +43,7 @@ const handler = async ({
     },
     {
       role: "user",
-      content: `A estrutura json de resposta deve ser no seguinte template: { questions: [{question: string; choices: string[]; awswer: string; }] }`,
+      content: `A estrutura json de resposta deve ser no seguinte template: { questions: [{question: string; choices: string[]; answer: string; }] }`,
     },
     {
       role: "user",
@@ -40,16 +62,33 @@ const handler = async ({
       messages: messages,
       model: "gpt-3.5-turbo-1106",
       response_format: { type: "json_object" },
-      seed: Math.ceil(Math.random() * 100000000),
+      // temperature: 1.5,
     });
 
-    const questions: any = aiRes.choices[0].message.content;
+    const questions: any = JSON.parse(aiRes.choices[0].message.content || "");
+
+    // console.log("questions", { questions });
+
+    try {
+      await supabase.from("questions").insert({
+        context: { age, level, language },
+        ai_response: questions,
+      });
+    } catch (err) {}
+
+    const { success } = quizSchema2.safeParse(questions);
+
+    let data = questions;
+    if (success) {
+      data["questions"] = data.quizzes;
+      delete data.quizzes;
+    } else {
+      quizSchema.parse(questions);
+    }
 
     // console.log("game", { age, level, questions });
 
-    return new Response(
-      JSON.stringify({ status: "success", data: JSON.parse(questions) })
-    );
+    return new Response(JSON.stringify({ status: "success", data }));
 
     // return new Response(
     //   JSON.stringify({

@@ -11,17 +11,19 @@ import Layout from '../layouts/layout.astro';
 // 	Astro.response.headers.set('COOKIE', JSON.stringify({settings: {age, level, theme}}))
 // }
 
+const logo = `/images/home-logo-${Math.ceil(Math.random() * 4)}.jpeg`;
+
 ---
 
 <Layout>
-	<div class="card w-auto bg-primary p-8 text-white">
-		<div class="card-title">
-			<h1 class="mb-4 text-4xl font-bold">Joga e Aprende 😀</h1>
-		</div>
-		<!-- <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure> -->
+	<div class="card w-auto bg-primary text-white">
+		<figure class="px-10 pt-10"><img class="mask mask-hexagon-2" src={logo} alt="logo" /></figure>
 		<div class="card-body">
+			<div class="card-title">
+				<h1 class="mb-4 text-4xl font-bold">Joga e Aprende 😀</h1>
+			</div>
 			<a href="/game">
-				<button class="btn btn-secondary"><span class="text-primary-content">Jogar</span></button>
+				<button class="btn btn-secondary btn-lg"><span class="text-primary-content">Jogar</span></button>
 			</a>
 		</div>
 	  </div>

@@ -82,10 +82,9 @@ export const storage = {
       const v = localStorage.getItem(PLAY_AND_LEARN_STORAGE_KEY);
       storage = v ? JSON.parse(v) : storage;
     } catch (err) {
-      localStorage.setItem(
-        PLAY_AND_LEARN_STORAGE_KEY,
-        JSON.stringify(PLAY_AND_LEARN_STORAGE_DEFAULTS)
-      );
+      localStorage.removeItem(PLAY_AND_LEARN_STORAGE_KEY);
+
+      storage = PLAY_AND_LEARN_STORAGE_DEFAULTS;
     }
 
     return storage;

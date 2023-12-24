@@ -26,6 +26,7 @@ export const SettingsBlock: React.FC = () => {
     body.append("age", formData.age);
     body.append("level", formData.level);
     body.append("theme", formData.theme);
+    body.append("language", formData.language);
 
     // fetch("/api/cookies", {
     //   method: "POST",
@@ -34,6 +35,8 @@ export const SettingsBlock: React.FC = () => {
     //   window.location.href = window.location.origin;
     // });
   };
+
+  console.log("SettingsBlock", { settings, formData });
 
   return (
     <form ref={formRef as any} action="/api/cookies" method="POST">
