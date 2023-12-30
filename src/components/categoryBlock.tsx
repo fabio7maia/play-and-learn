@@ -1,8 +1,10 @@
 import React from "react";
 import { CATEGORIES } from "../constants/category";
+import { storage } from "../lib/storage";
 import { Card } from "./card";
 
 export const CategoryBlock: React.FC = () => {
+  const { settings } = storage.get();
   const [levels, setLevels] = React.useState([undefined, undefined]);
 
   const renderCategory = (category: any, level = 0) => {
@@ -41,12 +43,14 @@ export const CategoryBlock: React.FC = () => {
                       size="xs"
                       variant="secondary"
                       onClick={() => {
-                        setLevels((levels) => {
-                          levels[1] =
-                            levels[1] !== undefined ? undefined : category.text;
-
-                          return [...levels];
+                        storage.set({
+                          settings: {
+                            ...settings,
+                            category: x.text,
+                          },
                         });
+
+                        window.location.href = "/";
                       }}
                     />
                   </div>

@@ -4,8 +4,8 @@ import {
   LANGUAGE_VALUES,
   LEVEL_VALUES,
   THEME_VALUES,
-  storage,
-} from "../lib/storage";
+} from "../constants/storage";
+import { storage } from "../lib/storage";
 
 export const SettingsBlock: React.FC = () => {
   const { settings } = storage.get();
@@ -52,7 +52,7 @@ export const SettingsBlock: React.FC = () => {
             </select>
           </label>
 
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full max-w-xs mt-4">
             <div className="label">
               <span className="label-text text-white">What is your level?</span>
             </div>
@@ -70,7 +70,7 @@ export const SettingsBlock: React.FC = () => {
             </select>
           </label>
 
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full max-w-xs mt-4">
             <div className="label">
               <span className="label-text text-white">
                 What is your prefered theme?
@@ -90,7 +90,7 @@ export const SettingsBlock: React.FC = () => {
             </select>
           </label>
 
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full max-w-xs mt-4">
             <div className="label">
               <span className="label-text text-white">
                 What is your prefered language?
@@ -109,6 +109,12 @@ export const SettingsBlock: React.FC = () => {
               ))}
             </select>
           </label>
+
+          <div className="mt-4">
+            <a href="/category" className="link link-neutral">
+              Change category
+            </a>
+          </div>
         </div>
 
         <div className="card-actions">
