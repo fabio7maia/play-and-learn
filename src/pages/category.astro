@@ -1,0 +1,11 @@
+---
+import { CategoryBlock } from '../components/categoryBlock';
+import Layout from '../layouts/layout.astro';
+
+const logo = `/images/home-logo-${Math.ceil(Math.random() * 4)}.jpeg`;
+
+---
+
+<Layout>
+	<CategoryBlock client:only/>
+</Layout>

@@ -25,10 +25,12 @@ const handler = async ({
   age = "10 a 13",
   language = "pt",
   level = "3",
+  category = "cultura geral",
 }: {
   age?: string;
   level?: string;
   language?: string;
+  category?: string;
 }) => {
   const messages = [
     {
@@ -49,7 +51,7 @@ const handler = async ({
     },
     {
       role: "user",
-      content: `Gera-me 10 perguntas e as respetivas 4 alternativas de respostas considerando a idade ${age} e o nível de dificuldade ${level} em json`,
+      content: `Gera-me 10 perguntas e as respetivas 4 alternativas de respostas considerando a idade ${age} e o nível de dificuldade ${level} para a categoria ${category} em json`,
     },
   ] as any;
 
