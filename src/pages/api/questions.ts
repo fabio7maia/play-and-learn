@@ -58,122 +58,122 @@ const handler = async ({
   // console.log("formData", { age, level });
 
   try {
-    // const aiRes = await openai.chat.completions.create({
-    //   messages: messages,
-    //   model: "gpt-3.5-turbo-1106",
-    //   response_format: { type: "json_object" },
-    //   // temperature: 1.5,
-    // });
+    const aiRes = await openai.chat.completions.create({
+      messages: messages,
+      model: "gpt-3.5-turbo-1106",
+      response_format: { type: "json_object" },
+      // temperature: 1.5,
+    });
 
-    // const questions: any = JSON.parse(aiRes.choices[0].message.content || "");
+    const questions: any = JSON.parse(aiRes.choices[0].message.content || "");
 
-    // // console.log("questions", { questions });
+    // console.log("questions", { questions });
 
-    // try {
-    //   await supabase.from("questions").insert({
-    //     context: { age, level, language },
-    //     ai_response: questions,
-    //   });
-    // } catch (err) {}
+    try {
+      await supabase.from("questions").insert({
+        context: { age, level, language },
+        ai_response: questions,
+      });
+    } catch (err) {}
 
-    // const { success } = quizSchema2.safeParse(questions);
+    const { success } = quizSchema2.safeParse(questions);
 
-    // let data = questions;
-    // if (success) {
-    //   data["questions"] = data.quizzes;
-    //   delete data.quizzes;
-    // } else {
-    //   quizSchema.parse(questions);
-    // }
+    let data = questions;
+    if (success) {
+      data["questions"] = data.quizzes;
+      delete data.quizzes;
+    } else {
+      quizSchema.parse(questions);
+    }
 
-    // // console.log("game", { age, level, questions });
+    // console.log("game", { age, level, questions });
 
-    // return new Response(JSON.stringify({ status: "success", data }));
+    return new Response(JSON.stringify({ status: "success", data }));
 
-    return new Response(
-      JSON.stringify({
-        status: "success",
-        data: {
-          questions: [
-            {
-              question: "Qual é a capital do Brasil?",
-              choices: ["Buenos Aires", "Brasília", "Lima", "Rio de Janeiro"],
-              answer: "Brasília",
-            },
-            {
-              question: "Quantos planetas existem no nosso sistema solar?",
-              choices: ["8", "7", "9", "10"],
-              answer: "8",
-            },
-            {
-              question: "Quem pintou a Mona Lisa?",
-              choices: [
-                "Pablo Picasso",
-                "Vincent van Gogh",
-                "Leonardo da Vinci",
-                "Michelangelo",
-              ],
-              answer: "Leonardo da Vinci",
-            },
-            {
-              question: "Qual é o maior animal terrestre?",
-              choices: [
-                "Elefante africano",
-                "Baleia-azul",
-                "Girafa",
-                "Rinoceronte-branco",
-              ],
-              answer: "Elefante africano",
-            },
-            {
-              question: "Qual é a capital de Portugal?",
-              choices: ["Lisboa", "Porto", "Faro", "Coimbra"],
-              answer: "Lisboa",
-            },
-            {
-              question: "Quantos dias tem um ano bissexto?",
-              choices: ["365", "366", "364", "367"],
-              answer: "366",
-            },
-            {
-              question: "Quem escreveu a peça 'Romeu e Julieta'?",
-              choices: [
-                "William Shakespeare",
-                "Miguel de Cervantes",
-                "Jane Austen",
-                "Emily Brontë",
-              ],
-              answer: "William Shakespeare",
-            },
-            {
-              question: "Qual é o maior oceano do mundo?",
-              choices: [
-                "Oceano Atlântico",
-                "Oceano Índico",
-                "Oceano Ártico",
-                "Oceano Pacífico",
-              ],
-              answer: "Oceano Pacífico",
-            },
-            {
-              question: "Como se chama a estrela mais próxima da Terra?",
-              choices: [
-                "Alfa Centauri",
-                "Estrela de Barnard",
-                "Proxima Centauri",
-                "Vega",
-              ],
-              answer: "Proxima Centauri",
-            },
-            {
-              question: "Qual é a língua oficial do Brasil?",
-              choices: ["Espanhol", "Francês", "Inglês", "Português"],
-              answer: "Português",
-            },
-          ],
-        },
-      })
-    );
+    // return new Response(
+    //   JSON.stringify({
+    //     status: "success",
+    //     data: {
+    //       questions: [
+    //         {
+    //           question: "Qual é a capital do Brasil?",
+    //           choices: ["Buenos Aires", "Brasília", "Lima", "Rio de Janeiro"],
+    //           answer: "Brasília",
+    //         },
+    //         {
+    //           question: "Quantos planetas existem no nosso sistema solar?",
+    //           choices: ["8", "7", "9", "10"],
+    //           answer: "8",
+    //         },
+    //         {
+    //           question: "Quem pintou a Mona Lisa?",
+    //           choices: [
+    //             "Pablo Picasso",
+    //             "Vincent van Gogh",
+    //             "Leonardo da Vinci",
+    //             "Michelangelo",
+    //           ],
+    //           answer: "Leonardo da Vinci",
+    //         },
+    //         {
+    //           question: "Qual é o maior animal terrestre?",
+    //           choices: [
+    //             "Elefante africano",
+    //             "Baleia-azul",
+    //             "Girafa",
+    //             "Rinoceronte-branco",
+    //           ],
+    //           answer: "Elefante africano",
+    //         },
+    //         {
+    //           question: "Qual é a capital de Portugal?",
+    //           choices: ["Lisboa", "Porto", "Faro", "Coimbra"],
+    //           answer: "Lisboa",
+    //         },
+    //         {
+    //           question: "Quantos dias tem um ano bissexto?",
+    //           choices: ["365", "366", "364", "367"],
+    //           answer: "366",
+    //         },
+    //         {
+    //           question: "Quem escreveu a peça 'Romeu e Julieta'?",
+    //           choices: [
+    //             "William Shakespeare",
+    //             "Miguel de Cervantes",
+    //             "Jane Austen",
+    //             "Emily Brontë",
+    //           ],
+    //           answer: "William Shakespeare",
+    //         },
+    //         {
+    //           question: "Qual é o maior oceano do mundo?",
+    //           choices: [
+    //             "Oceano Atlântico",
+    //             "Oceano Índico",
+    //             "Oceano Ártico",
+    //             "Oceano Pacífico",
+    //           ],
+    //           answer: "Oceano Pacífico",
+    //         },
+    //         {
+    //           question: "Como se chama a estrela mais próxima da Terra?",
+    //           choices: [
+    //             "Alfa Centauri",
+    //             "Estrela de Barnard",
+    //             "Proxima Centauri",
+    //             "Vega",
+    //           ],
+    //           answer: "Proxima Centauri",
+    //         },
+    //         {
+    //           question: "Qual é a língua oficial do Brasil?",
+    //           choices: ["Espanhol", "Francês", "Inglês", "Português"],
+    //           answer: "Português",
+    //         },
+    //       ],
+    //     },
+    //   })
+    // );
   } catch (err) {
     return new Response(
       JSON.stringify({
