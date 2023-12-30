@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
 import { z } from "zod";
+import { openai } from "../../lib/openai";
+import { supabase } from "../../lib/supabase";
 
 const quizSchema = z.object({
   questions: z.array(
