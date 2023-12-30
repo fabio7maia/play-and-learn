@@ -110,11 +110,22 @@ export const SettingsBlock: React.FC = () => {
             </select>
           </label>
 
-          <div className="mt-4">
-            <a href="/category" className="link link-neutral">
-              Change category
-            </a>
-          </div>
+          <label className="form-control w-full max-w-xs mt-4">
+            <div className="label">
+              <span className="label-text text-white">
+                What is your prefered category?
+              </span>
+            </div>
+            <div className="label">
+              <span className="label-text text-white">{settings.category}</span>
+
+              <span className="label-text-alt">
+                <a href="/category" className="link link-neutral">
+                  Change category
+                </a>
+              </span>
+            </div>
+          </label>
         </div>
 
         <div className="card-actions">

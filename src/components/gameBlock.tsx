@@ -16,13 +16,16 @@ type GameState = {
     | "none"
     | "loading"
     | "readyToStart"
-    | "inProgress"
+    | "question"
+    | "answer"
+    | "noTime"
     | "ended"
     | "error";
   questions: { question: string; answer: string; choices: string[] }[];
   numberOfCorrect: number;
   numberOfIncorrect: number;
   lastAnswerStatus: "none" | "correct" | "incorrect";
+  timeoutId?: NodeJS.Timeout;
 };
 
 const TIMER_VALUES: Record<TAgeValues, number> = {
@@ -35,7 +38,6 @@ const TIMER_VALUES: Record<TAgeValues, number> = {
 
 export const GameBlock: React.FC = () => {
   const { settings } = storage.get();
-  const intervalId = React.useRef<number>();
   const timerValue = TIMER_VALUES[settings.age];
   const gameState = React.useRef<GameState>({
     questionIndex: 0,
@@ -98,12 +100,8 @@ export const GameBlock: React.FC = () => {
   React.useEffect(() => {
     initializeGame();
 
-    intervalId.current && clearInterval(intervalId.current);
-
-    setInterval(treatTimer, 1000);
-
     return () => {
-      intervalId.current && clearInterval(intervalId.current);
+      clearTimeout(gameState.current.timeoutId);
     };
   }, []);
 
@@ -112,14 +110,25 @@ export const GameBlock: React.FC = () => {
   };
 
   const treatTimer = () => {
-    if (gameState.current.status !== "inProgress") {
+    clearTimeout(gameState.current.timeoutId);
+
+    if (gameState.current.status !== "question") {
       return;
     }
 
     if (gameState.current.timer > 0) {
       gameState.current.timer--;
-      update();
+
+      gameState.current.timeoutId = setTimeout(treatTimer, 1000);
+    } else {
+      gameState.current.status = "noTime";
     }
+
+    update();
+  };
+
+  const registerTimer = () => {
+    gameState.current.timeoutId = setTimeout(treatTimer, 1000);
   };
 
   const resetTimer = () => {
@@ -127,6 +136,8 @@ export const GameBlock: React.FC = () => {
   };
 
   const onClickChoice = (choice: string) => {
+    clearTimeout(gameState.current.timeoutId);
+
     if (gameState.current.timer === 0) {
       return;
     }
@@ -134,14 +145,7 @@ export const GameBlock: React.FC = () => {
     const question =
       gameState.current.questions?.[gameState.current.questionIndex];
 
-    if (
-      gameState.current.questionIndex <
-      gameState.current.questions.length - 1
-    ) {
-      gameState.current.questionIndex++;
-    } else {
-      gameState.current.status = "ended";
-    }
+    gameState.current.status = "answer";
 
     if (choice === question.answer) {
       gameState.current.points += gameState.current.timer;
@@ -152,8 +156,6 @@ export const GameBlock: React.FC = () => {
       gameState.current.lastAnswerStatus = "incorrect";
     }
 
-    resetTimer();
-
     update();
   };
 
@@ -163,13 +165,25 @@ export const GameBlock: React.FC = () => {
       gameState.current.questions.length - 1
     ) {
       gameState.current.questionIndex++;
-      resetTimer();
     } else {
       gameState.current.status = "ended";
+
+      update();
+
+      return;
     }
 
-    gameState.current.numberOfIncorrect++;
-    gameState.current.lastAnswerStatus = "incorrect";
+    if (gameState.current.status === "noTime") {
+      gameState.current.numberOfIncorrect++;
+      gameState.current.lastAnswerStatus = "incorrect";
+    }
+
+    gameState.current.status = "question";
+
+    resetTimer();
+
+    registerTimer();
+
     update();
   };
 
@@ -178,7 +192,11 @@ export const GameBlock: React.FC = () => {
   };
 
   const startGame = () => {
-    gameState.current.status = "inProgress";
+    gameState.current.status = "question";
+
+    resetTimer();
+
+    registerTimer();
 
     update();
   };
@@ -223,14 +241,25 @@ export const GameBlock: React.FC = () => {
   const lastAnswerStatus = gameState.current.lastAnswerStatus;
 
   React.useEffect(() => {
-    setTimeout(() => {
-      gameState.current.lastAnswerStatus = "none";
+    let timeoutId: NodeJS.Timeout;
 
-      update();
-    }, 500);
+    if (
+      gameState.current.status === "answer" &&
+      gameState.current.lastAnswerStatus !== "none"
+    ) {
+      timeoutId = setTimeout(() => {
+        gameState.current.lastAnswerStatus = "none";
+
+        update();
+      }, 500);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [lastAnswerStatus]);
 
-  // console.log("GameBlock", { gameState });
+  const isEndedQuestion = ["noTime", "answer"].includes(status);
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
@@ -345,7 +374,7 @@ export const GameBlock: React.FC = () => {
           <div className="card bg-neutral-content p-4 text-white">
             <div
               className={`grid grid-rows-2 grid-flow-col gap-4 z-20 ${
-                timer === 0 ? "opacity-50" : undefined
+                status === "noTime" ? "opacity-50" : undefined
               }`}
             >
               {status === "loading" ? (
@@ -373,7 +402,9 @@ export const GameBlock: React.FC = () => {
                       <button
                         className="btn btn-accent w-full min-h-24"
                         onClick={() => onClickChoice(choice)}
-                        disabled={timer === 0}
+                        disabled={
+                          isEndedQuestion ? question.answer !== choice : false
+                        }
                       >
                         {choice}
                       </button>
@@ -383,10 +414,10 @@ export const GameBlock: React.FC = () => {
               )}
             </div>
 
-            {timer === 0 && (
+            {isEndedQuestion && (
               <div className="absolute z-30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <button
-                  className="btn btn-primary w-48 h-24"
+                  className="btn btn-primary w-32 h-16"
                   onClick={onClickNext}
                 >
                   Avançar
