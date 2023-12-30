@@ -333,7 +333,7 @@ export const GameBlock: React.FC = () => {
             </div>
           </div>
 
-          <div className="mb-8" />
+          <div className="mb-2" />
 
           <div className="card min-h-72 bg-info p-4 text-white">
             <div className="flex justify-between items-center">
@@ -369,7 +369,7 @@ export const GameBlock: React.FC = () => {
             )}
           </div>
 
-          <div className="mb-8" />
+          <div className="mb-4" />
 
           <div className="card bg-neutral-content p-4 text-white">
             <div
