@@ -335,7 +335,7 @@ export const GameBlock: React.FC = () => {
 
           <div className="mb-2" />
 
-          <div className="card min-h-72 bg-info p-4 text-white">
+          <div className="card min-h-64 bg-info p-4 text-white">
             <div className="flex justify-between items-center">
               <div>
                 <span className="font-bold text-2xl">
@@ -359,7 +359,7 @@ export const GameBlock: React.FC = () => {
             {status === "loading" ? (
               <div className="skeleton mt-8 bg-gray-300 w-84 h-40"></div>
             ) : ["readyToStart", "ended"].includes(status) ? (
-              <span className="mt-4 font-bold text-4xl">
+              <span className="mt-4 font-bold text-2xl">
                 {messageForQuestionBlock}
               </span>
             ) : (
