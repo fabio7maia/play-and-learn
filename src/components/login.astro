@@ -1,0 +1,22 @@
+---
+    import { UserIcon } from "@heroicons/react/24/solid";
+
+const logo = `/images/home-logo-${Math.ceil(Math.random() * 4)}.jpeg`;
+---
+
+
+    <form action="/api/login" method="POST">
+      <div class="card bg-primary text-white">
+        <figure class="px-10 pt-10">
+          <img class="mask mask-hexagon-2" src={logo} alt="logo" />
+        </figure>
+        <div class="card-body text-center items-center">
+          <div class="card-title">
+            <UserIcon height={60} />
+          </div>
+          <button class="btn btn-secondary btn-lg w-56 mt-4">
+            <span class="text-primary-content">Login with google</span>
+          </button>
+        </div>
+      </div>
+    </form>

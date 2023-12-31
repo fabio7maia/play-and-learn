@@ -81,9 +81,9 @@ export const CategoryBlock: React.FC = () => {
     return res;
   };
 
-  console.log("CategoryBlock", {
-    levels,
-  });
+  // console.log("CategoryBlock", {
+  //   levels,
+  // });
 
   return (
     <>

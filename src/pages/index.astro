@@ -1,30 +1,23 @@
 ---
-import Layout from '../layouts/layout.astro';
-
-// const formData = await Astro.request.formData();
-
-// const age = formData.has('age');
-// const level = formData.has('level');
-// const theme = formData.has('theme');
-
-// if(age || level || theme) {
-// 	Astro.response.headers.set('COOKIE', JSON.stringify({settings: {age, level, theme}}))
-// }
+import Layout from "../layouts/layout.astro";
 
 const logo = `/images/home-logo-${Math.ceil(Math.random() * 4)}.jpeg`;
-
 ---
 
 <Layout>
-	<div class="card bg-primary text-white">
-		<figure class="px-10 pt-10"><img class="mask mask-hexagon-2" src={logo} alt="logo" /></figure>
-		<div class="card-body text-center items-center">
-			<div class="card-title">
-				<h1 class="mb-4 text-4xl font-bold">Joga e Aprende 😀</h1>
-			</div>
-			<a href="/game">
-				<button class="btn btn-secondary btn-lg w-56"><span class="text-primary-content">Jogar</span></button>
-			</a>
-		</div>
-	</div>
+  <div class="card bg-primary text-white">
+    <figure class="px-10 pt-10">
+      <img class="mask mask-hexagon-2 max-h-96" src={logo} alt="logo" />
+    </figure>
+    <div class="card-body text-center items-center">
+      <div class="card-title">
+        <h1 class="mb-4 text-4xl font-bold">Joga e Aprende 😀</h1>
+      </div>
+      <a href="/game">
+        <button class="btn btn-secondary btn-lg w-56"
+          ><span class="text-primary-content">Jogar</span></button
+        >
+      </a>
+    </div>
+  </div>
 </Layout>

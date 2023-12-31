@@ -6,6 +6,7 @@ import {
   THEME_VALUES,
 } from "../constants/storage";
 import { storage } from "../lib/storage";
+import { User } from "./user";
 
 export const SettingsBlock: React.FC = () => {
   const { settings } = storage.get();
@@ -33,7 +34,10 @@ export const SettingsBlock: React.FC = () => {
         <div className="card-title">
           <h1 className="mb-8 text-4xl font-bold">Settings</h1>
         </div>
-        <div className="mb-4 w-full flex flex-col items-center">
+
+        <User size="lg" />
+
+        <div className="my-4 w-full flex flex-col items-center">
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text text-white">What is your age?</span>

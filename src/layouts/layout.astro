@@ -1,37 +1,44 @@
 ---
-import BottomNav from '../components/bottomNav.astro';
+import { Auth } from "../components/auth";
+import BottomNav from "../components/bottomNav.astro";
 
-const background = `background: url(/images/home-${Math.ceil(Math.random() * 12)}.jpeg); background-size: cover; background-repeat: round; height: calc(100vh - 64px); width: 100vw;`;
+const background = `background: url(/images/home-${Math.ceil(
+  Math.random() * 12
+)}.jpeg); background-size: cover; background-repeat: round; height: calc(100vh - 64px); width: 100vw;`;
 
-const playAndLearnCookie = Astro.cookies.get('__play_and_learn__');
+const playAndLearnCookie = Astro.cookies.get("__play_and_learn__");
 
-let theme = 'retro';
+let theme = "retro";
 
 try {
-	if(playAndLearnCookie){
-		theme = playAndLearnCookie.json().settings.theme;
-	}
-} catch(err){}
+  if (playAndLearnCookie) {
+    theme = playAndLearnCookie.json().settings.theme;
+  }
+} catch (err) {}
 ---
 
 <!doctype html>
 <html lang="pt" data-theme={theme}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Play and Learn</title>
-	</head>
-	<body class="h-screen w-full">
-		<div class="fixed top-0 opacity-50 z-10" style={background}></div>
-		<div class="p-2 sm:p-8 md:p-16 lg:p-16 flex flex-row justify-center items-center" style="min-height: calc(100svh - 64px);">
-			<div class="z-20 w-full">
-				<slot />
-			</div>
-		</div>
-		<div style="height: 64px;"></div>
-		<BottomNav />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Play and Learn</title>
+  </head>
+  <body class="h-screen w-full">
+    <Auth client:only />
+    <div class="fixed top-0 opacity-50 z-10" style={background}></div>
+    <div
+      class="p-2 sm:p-8 md:p-16 lg:p-16 flex flex-row justify-center items-center"
+      style="min-height: calc(100svh - 80px);"
+    >
+      <div class="z-20 w-full">
+        <slot />
+      </div>
+    </div>
+    <div style="height: 64px;"></div>
+    <BottomNav />
+  </body>
 </html>
