@@ -46,21 +46,22 @@ export const POST: APIRoute = async ({ request, url, cookies }) => {
     `__play_and_learn__=${JSON.stringify({
       ...playAndLearnCookieJson,
       settings: {
-        age: playAndLearnCookieJson.settings.age || settings.age,
-        language: playAndLearnCookieJson.settings.language || settings.language,
-        level: playAndLearnCookieJson.settings.level || settings.level,
-        theme: playAndLearnCookieJson.settings.theme || settings.theme,
+        age: playAndLearnCookieJson?.settings?.age || settings.age,
+        language:
+          playAndLearnCookieJson?.settings?.language || settings.language,
+        level: playAndLearnCookieJson?.settings?.level || settings.level,
+        theme: playAndLearnCookieJson?.settings?.theme || settings.theme,
       },
       auth: {
         accessToken:
-          playAndLearnCookieJson.auth.accessToken || auth.accessToken,
-        expiresAt: playAndLearnCookieJson.auth.expiresAt || auth.expiresAt,
-        expiresIn: playAndLearnCookieJson.auth.expiresIn || auth.expiresIn,
+          playAndLearnCookieJson?.auth?.accessToken || auth.accessToken,
+        expiresAt: playAndLearnCookieJson?.auth?.expiresAt || auth.expiresAt,
+        expiresIn: playAndLearnCookieJson?.auth?.expiresIn || auth.expiresIn,
         providerToken:
-          playAndLearnCookieJson.auth.providerToken || auth.providerToken,
+          playAndLearnCookieJson?.auth?.providerToken || auth.providerToken,
         refreshToken:
-          playAndLearnCookieJson.auth.refreshToken || auth.refreshToken,
-        tokenType: playAndLearnCookieJson.auth.tokenType || auth.tokenType,
+          playAndLearnCookieJson?.auth?.refreshToken || auth.refreshToken,
+        tokenType: playAndLearnCookieJson?.auth?.tokenType || auth.tokenType,
       },
     })}; HttpOnly;Domain=${url.hostname};Path=/;Max-Age=2592000;`
   );

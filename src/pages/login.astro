@@ -9,7 +9,11 @@ const logo = `/images/home-logo-${Math.ceil(Math.random() * 4)}.jpeg`;
 <Layout>
   <div class="card bg-primary text-white">
     <figure class="px-10 pt-10">
-      <img class="mask mask-hexagon-2" src={logo} alt="logo" />
+      <img
+        class="mask mask-hexagon-2 h-40 xs:h-60 md:h-72 lg:h-80"
+        src={logo}
+        alt="logo"
+      />
     </figure>
     <div class="card-body text-center items-center">
       <div class="card-title">
