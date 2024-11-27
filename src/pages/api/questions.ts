@@ -28,11 +28,13 @@ const handler = async ({
   language = "pt",
   level = "3",
   category = "cultura geral",
+  contents = []
 }: {
   age?: string;
   level?: string;
   language?: string;
   category?: string;
+  contents?: string[];
 }) => {
   const messages = [
     {
@@ -55,6 +57,7 @@ const handler = async ({
       role: "user",
       content: `Gera-me 10 perguntas e as respetivas 4 alternativas de respostas considerando a idade ${age} e o nível de dificuldade ${level} para a categoria ${category} em json`,
     },
+    ...contents.map(content => ({ role: 'user', content })) 
   ] as any;
 
   // console.log("formData", { age, level });
@@ -191,6 +194,7 @@ export const GET: APIRoute = async () => {
   const level = "3";
   const language = "pt-pt";
   const category = "cultura geral";
+  const contents = ['Cria perguntas que permita aprender Inglês'];
 
   return handler({ age, level, language, category });
 };
