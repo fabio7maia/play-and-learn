@@ -194,7 +194,7 @@ export const GET: APIRoute = async () => {
   const level = "3";
   const language = "pt-pt";
   const category = "cultura geral";
-  const contents = ['Cria perguntas que permita aprender Inglês'];
+  const contents = ['Cria perguntas que permita aprender Inglês, as perguntas devem ser em português e as respostas em inglês.'];
 
   return handler({ age, level, language, category, contents });
 };
